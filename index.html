@@ -3,7 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Miracle | 个人主页</title>
+    <meta name="description" content="Miracle - 全栈开发者 | 创意工程师个人主页 - 专注前端开发、React、Vue、Node.js等技术">
+    <meta name="keywords" content="全栈开发,前端开发,React,Vue,Node.js,个人主页,技术博客">
+    <meta name="author" content="Miracle">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Miracle - 全栈开发者">
+    <meta property="og:description" content="热爱技术，专注于创建优雅且高效的解决方案">
+    <meta property="og:type" content="website">
+    <title>Miracle | 全栈开发者</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -17,12 +24,17 @@
         :root {
             --primary-dark: #0d1117;
             --primary-light: #161b22;
+            --secondary-light: #21262d;
             --accent: #58a6ff;
             --accent-hover: #79c0ff;
+            --accent-purple: #a371f7;
+            --accent-green: #3fb950;
             --text-primary: #f0f6fc;
             --text-secondary: #8b949e;
             --border: #30363d;
             --success: #3fb950;
+            --warning: #d29922;
+            --danger: #f85149;
         }
 
         html {
@@ -37,16 +49,56 @@
             overflow-x: hidden;
         }
 
+        #particles-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .glow-orb {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .glow-orb-1 {
+            top: -200px;
+            right: -200px;
+            background: var(--accent);
+        }
+
+        .glow-orb-2 {
+            bottom: -200px;
+            left: -200px;
+            background: var(--accent-purple);
+        }
+
         nav {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             background: rgba(13, 17, 23, 0.85);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             z-index: 1000;
             padding: 1rem 2rem;
             border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(13, 17, 23, 0.98);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
         }
 
         .nav-container {
@@ -62,23 +114,71 @@
             font-weight: 700;
             color: var(--accent);
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+            animation: float 3s ease-in-out infinite;
         }
 
         .nav-links {
             display: flex;
             gap: 2rem;
             list-style: none;
+            align-items: center;
         }
 
         .nav-links a {
             color: var(--text-secondary);
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
         }
 
-        .nav-links a:hover {
+        .nav-links a:hover,
+        .nav-links a.active {
             color: var(--accent);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-purple));
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .theme-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            transform: rotate(15deg);
         }
 
         .mobile-menu-btn {
@@ -90,10 +190,18 @@
             cursor: pointer;
         }
 
-        section {
-            padding: 6rem 2rem;
+        .section {
+            padding: 8rem 2rem;
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-alt {
+            background: var(--primary-light);
+            border-radius: 30px;
+            margin: 2rem auto;
         }
 
         #hero {
@@ -102,52 +210,159 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding-top: 80px;
+            padding-top: 100px;
             position: relative;
+            overflow: hidden;
         }
 
         .hero-content {
             animation: fadeInUp 1s ease-out;
         }
 
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(88, 166, 255, 0.1);
+            border: 1px solid rgba(88, 166, 255, 0.3);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            animation: pulse 2s infinite;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        .avatar-container {
+            position: relative;
+            margin-bottom: 2rem;
+            display: inline-block;
+        }
+
+        .avatar-ring {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            right: -20px;
+            bottom: -20px;
+            border: 2px solid transparent;
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 3s linear infinite;
+        }
+
+        .avatar-ring:nth-child(2) {
+            top: -30px;
+            left: -30px;
+            right: -30px;
+            bottom: -30px;
+            border-top-color: var(--accent-purple);
+            animation-duration: 4s;
+            animation-direction: reverse;
+        }
+
         .avatar {
             width: 180px;
             height: 180px;
             border-radius: 50%;
-            border: 4px solid var(--accent);
-            margin-bottom: 2rem;
-            object-fit: cover;
-            box-shadow: 0 0 40px rgba(88, 166, 255, 0.3);
-            background: linear-gradient(135deg, var(--accent) 0%, var(--success) 100%);
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-purple) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4rem;
-            margin-left: auto;
-            margin-right: auto;
+            font-size: 5rem;
+            position: relative;
+            box-shadow: 0 0 60px rgba(88, 166, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .avatar-container:hover .avatar {
+            transform: scale(1.05);
+            box-shadow: 0 0 80px rgba(88, 166, 255, 0.5);
         }
 
         .hero-title {
-            font-size: 3.5rem;
+            font-size: 4rem;
             font-weight: 700;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--success) 100%);
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-purple) 50%, var(--accent-green) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            animation: gradient-shift 5s ease infinite;
+            background-size: 200% 200%;
         }
 
         .hero-subtitle {
             font-size: 1.5rem;
             color: var(--text-secondary);
             margin-bottom: 2rem;
+            min-height: 2rem;
+        }
+
+        .typing-cursor {
+            animation: blink 0.7s infinite;
         }
 
         .hero-description {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto 2rem;
+            max-width: 650px;
+            margin: 0 auto 2.5rem;
+            opacity: 0;
+            animation: fadeIn 0.8s ease 0.5s forwards;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeIn 0.8s ease 1s forwards;
+        }
+
+        .stat-item {
+            text-align: center;
+            position: relative;
+        }
+
+        .stat-item::after {
+            content: '';
+            position: absolute;
+            right: -2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 40px;
+            background: var(--border);
+        }
+
+        .stat-item:last-child::after {
+            display: none;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--accent), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
         }
 
         .cta-buttons {
@@ -155,27 +370,49 @@
             gap: 1rem;
             justify-content: center;
             flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeIn 0.8s ease 1.2s forwards;
         }
 
         .btn {
-            padding: 0.875rem 2rem;
+            padding: 1rem 2rem;
             border-radius: 50px;
             font-weight: 600;
             text-decoration: none;
             transition: all 0.3s ease;
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--accent) 0%, #3d8fe6 100%);
-            color: var(--primary-dark);
-            box-shadow: 0 4px 15px rgba(88, 166, 255, 0.3);
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-purple) 100%);
+            color: white;
+            box-shadow: 0 4px 20px rgba(88, 166, 255, 0.3);
         }
 
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(88, 166, 255, 0.4);
+            box-shadow: 0 8px 30px rgba(88, 166, 255, 0.4);
         }
 
         .btn-secondary {
@@ -186,74 +423,273 @@
 
         .btn-secondary:hover {
             background: var(--accent);
-            color: var(--primary-dark);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent-purple);
+            color: var(--accent-purple);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator span {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .scroll-indicator svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--accent);
         }
 
         .section-title {
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-weight: 700;
-            margin-bottom: 3rem;
+            margin-bottom: 1rem;
             text-align: center;
-            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .section-title.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 4rem;
+            font-size: 1.1rem;
         }
 
         .section-title::after {
             content: '';
             display: block;
-            width: 60px;
+            width: 80px;
             height: 4px;
-            background: var(--accent);
-            margin: 1rem auto 0;
+            background: linear-gradient(90deg, var(--accent), var(--accent-purple), var(--accent-green));
+            margin: 1.5rem auto 0;
             border-radius: 2px;
         }
 
         #about {
             background: var(--primary-light);
+            border-radius: 30px;
+            margin: 2rem auto;
         }
 
-        .about-content {
+        .about-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 4rem;
             align-items: center;
         }
 
-        .about-text h3 {
-            font-size: 1.8rem;
+        .about-image-wrapper {
+            position: relative;
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+
+        .about-image-wrapper.visible {
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 0.6s ease;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 450px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-purple) 50%, var(--accent-green) 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.1), transparent 30%);
+            animation: spin 10s linear infinite;
+        }
+
+        .about-image::after {
+            content: '💻';
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-content {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+
+        .about-content.visible {
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 0.6s ease;
+        }
+
+        .about-content h3 {
+            font-size: 2rem;
             margin-bottom: 1.5rem;
             color: var(--accent);
         }
 
-        .about-text p {
+        .about-content p {
             color: var(--text-secondary);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             font-size: 1.05rem;
+            line-height: 1.8;
         }
 
-        .about-image {
-            background: linear-gradient(135deg, var(--accent) 0%, var(--success) 100%);
-            border-radius: 20px;
-            height: 350px;
+        .about-highlights {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .highlight-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem;
+            background: var(--secondary-light);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .highlight-item:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(88, 166, 255, 0.1);
+        }
+
+        .highlight-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-purple));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 8rem;
-            box-shadow: 0 20px 40px rgba(88, 166, 255, 0.2);
+            font-size: 1.5rem;
+        }
+
+        .highlight-text h4 {
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .highlight-text span {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        #skills {
+            margin-top: 3rem;
+        }
+
+        .skill-filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .skill-filter {
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            background: var(--primary-light);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .skill-filter.active,
+        .skill-filter:hover {
+            background: linear-gradient(135deg, var(--accent), var(--accent-purple));
+            border-color: transparent;
+            color: white;
+            transform: translateY(-2px);
         }
 
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
         }
 
         .skill-card {
             background: var(--primary-light);
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: 20px;
             padding: 2rem;
             text-align: center;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .skill-card.filter-hidden {
+            display: none;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-purple), var(--accent-green));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .skill-card:hover::before {
+            transform: scaleX(1);
         }
 
         .skill-card:hover {
@@ -263,50 +699,247 @@
         }
 
         .skill-icon {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .skill-card:hover .skill-icon {
+            transform: scale(1.1) rotate(5deg);
         }
 
         .skill-card h3 {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             margin-bottom: 0.5rem;
         }
 
         .skill-card p {
             color: var(--text-secondary);
             font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .skill-level {
+            width: 100%;
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .skill-level-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-purple));
+            border-radius: 4px;
+            transition: width 1.5s ease;
+            position: relative;
+        }
+
+        .skill-level-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        #experience {
+            background: var(--primary-light);
+            border-radius: 30px;
+            margin: 2rem auto;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(180deg, var(--accent), var(--accent-purple), var(--accent-green));
+            transform: translateX(-50%);
+            border-radius: 3px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease;
+        }
+
+        .timeline-item:nth-child(odd) {
+            padding-right: calc(50% + 3rem);
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) {
+            padding-left: calc(50% + 3rem);
+        }
+
+        .timeline-dot {
+            position: absolute;
+            top: 0;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-purple));
+            border: 4px solid var(--primary-dark);
+            z-index: 1;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-dot {
+            right: calc(-0.75rem - 12px);
+        }
+
+        .timeline-item:nth-child(even) .timeline-dot {
+            left: calc(-0.75rem - 12px);
+        }
+
+        .timeline-content {
+            background: var(--secondary-light);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(88, 166, 255, 0.1);
+        }
+
+        .timeline-content h4 {
+            color: var(--accent);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content .company {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content .period {
+            color: var(--accent-purple);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(163, 113, 247, 0.1);
+            border-radius: 20px;
+        }
+
+        .timeline-content p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
         }
 
         #projects {
+            margin-top: 3rem;
+        }
+
+        .project-filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .project-filter {
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
             background: var(--primary-light);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .project-filter.active,
+        .project-filter:hover {
+            background: linear-gradient(135deg, var(--accent), var(--accent-green));
+            border-color: transparent;
+            color: white;
+            transform: translateY(-2px);
         }
 
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
+            gap: 2.5rem;
         }
 
         .project-card {
-            background: var(--primary-dark);
+            background: var(--primary-light);
             border: 1px solid var(--border);
-            border-radius: 16px;
+            border-radius: 20px;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .project-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .project-card.filter-hidden {
+            display: none;
         }
 
         .project-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent);
         }
 
         .project-image {
-            height: 200px;
-            background: linear-gradient(135deg, #1a1f29 0%, #0d1117 100%);
+            height: 220px;
+            background: linear-gradient(135deg, var(--secondary-light) 0%, var(--primary-dark) 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4rem;
+            font-size: 5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .project-card:hover .project-image::after {
+            left: 100%;
         }
 
         .project-content {
@@ -314,13 +947,28 @@
         }
 
         .project-content h3 {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             margin-bottom: 0.5rem;
         }
 
         .project-content p {
             color: var(--text-secondary);
             margin-bottom: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .project-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .project-type {
+            color: var(--accent-green);
         }
 
         .project-tags {
@@ -332,142 +980,735 @@
         .tag {
             background: rgba(88, 166, 255, 0.1);
             color: var(--accent);
-            padding: 0.25rem 0.75rem;
+            padding: 0.35rem 0.85rem;
             border-radius: 20px;
             font-size: 0.85rem;
             border: 1px solid rgba(88, 166, 255, 0.3);
+            transition: all 0.3s ease;
         }
 
-        #contact {
-            text-align: center;
+        .tag:hover {
+            background: var(--accent);
+            color: white;
         }
 
-        .contact-description {
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto 3rem;
-        }
-
-        .social-links {
+        .project-links {
             display: flex;
-            gap: 1.5rem;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
+        }
+
+        .project-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--secondary-light);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
             justify-content: center;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .project-link:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        #blog {
+            background: var(--primary-light);
+            border-radius: 30px;
+            margin: 2rem auto;
+        }
+
+        .blog-filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
             flex-wrap: wrap;
         }
 
-        .social-link {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
+        .blog-filter {
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            background: var(--secondary-light);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .blog-filter.active,
+        .blog-filter:hover {
+            background: linear-gradient(135deg, var(--accent), var(--accent-purple));
+            border-color: transparent;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .blog-card {
+            background: var(--secondary-light);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            opacity: 0;
+            transform: translateY(20px);
+            cursor: pointer;
+        }
+
+        .blog-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .blog-card.filter-hidden {
+            display: none;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(88, 166, 255, 0.1);
+        }
+
+        .blog-image {
+            height: 180px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-purple) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blog-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.2), transparent);
+        }
+
+        .blog-content {
+            padding: 1.5rem;
+        }
+
+        .blog-category {
+            display: inline-block;
+            color: var(--accent);
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            background: rgba(88, 166, 255, 0.1);
+            border-radius: 20px;
+        }
+
+        .blog-content h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+            line-height: 1.4;
+            transition: color 0.3s ease;
+        }
+
+        .blog-card:hover .blog-content h3 {
+            color: var(--accent);
+        }
+
+        .blog-excerpt {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .blog-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .blog-stats {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .blog-stat {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .blog-read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .blog-card:hover .blog-read-more {
+            gap: 0.75rem;
+        }
+
+        .blog-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .blog-modal.active {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .blog-modal-content {
             background: var(--primary-light);
-            border: 2px solid var(--border);
+            border-radius: 20px;
+            max-width: 900px;
+            width: 100%;
+            margin: 4rem auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blog-modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--secondary-light);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .blog-modal-close:hover {
+            background: var(--accent);
+            color: white;
+        }
+
+        .blog-modal-image {
+            height: 300px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-purple) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+        }
+
+        .blog-modal-body {
+            padding: 2.5rem;
+        }
+
+        .blog-modal-category {
+            display: inline-block;
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            padding: 0.35rem 1rem;
+            background: rgba(88, 166, 255, 0.1);
+            border-radius: 20px;
+        }
+
+        .blog-modal-title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .blog-modal-meta {
+            display: flex;
+            gap: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .blog-modal-article {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+        }
+
+        .blog-modal-article h2 {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            margin: 2rem 0 1rem;
+        }
+
+        .blog-modal-article p {
+            margin-bottom: 1.5rem;
+        }
+
+        .blog-modal-article code {
+            background: var(--secondary-light);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: var(--accent);
+        }
+
+        .blog-modal-article pre {
+            background: var(--secondary-light);
+            padding: 1.5rem;
+            border-radius: 12px;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        .blog-modal-article ul {
+            margin: 1rem 0 1.5rem 2rem;
+        }
+
+        .blog-modal-article li {
+            margin-bottom: 0.5rem;
+        }
+
+        #contact {
+            background: var(--primary-light);
+            border-radius: 30px;
+            margin: 2rem auto;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 4rem;
+        }
+
+        .contact-info {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        .contact-info.visible {
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 0.6s ease;
+        }
+
+        .contact-info h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .contact-info > p {
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            font-size: 1.05rem;
+        }
+
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            padding: 1.25rem;
+            background: var(--secondary-light);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .contact-item:hover {
+            border-color: var(--accent);
+            transform: translateX(10px);
+        }
+
+        .contact-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-purple));
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.5rem;
+        }
+
+        .contact-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .contact-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .contact-value {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .contact-form-wrapper {
+            background: var(--secondary-light);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            opacity: 0;
+            transform: translateX(20px);
+        }
+
+        .contact-form-wrapper.visible {
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 0.6s ease;
+        }
+
+        .contact-form-wrapper h3 {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--primary-dark);
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 140px;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-purple) 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .form-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(88, 166, 255, 0.3);
+        }
+
+        .form-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .form-message {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 12px;
+            display: none;
+        }
+
+        .form-message.success {
+            background: rgba(63, 185, 80, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(63, 185, 80, 0.3);
+        }
+
+        .form-message.error {
+            background: rgba(248, 81, 73, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(248, 81, 73, 0.3);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-purple));
+            border: none;
+            color: white;
+            font-size: 1.3rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+            box-shadow: 0 4px 20px rgba(88, 166, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 8px 30px rgba(88, 166, 255, 0.4);
+        }
+
+        footer {
+            background: var(--primary-light);
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-social {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--secondary-light);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
             text-decoration: none;
             color: var(--text-secondary);
             transition: all 0.3s ease;
         }
 
         .social-link:hover {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: var(--primary-dark);
+            background: linear-gradient(135deg, var(--accent), var(--accent-purple));
+            border-color: transparent;
+            color: white;
             transform: translateY(-5px);
         }
 
-        footer {
-            background: var(--primary-light);
-            border-top: 1px solid var(--border);
-            padding: 2rem;
-            text-align: center;
+        .footer-text {
             color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-heart {
+            color: var(--danger);
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
         }
 
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        @media (max-width: 968px) {
+            .hero-title { font-size: 3rem; }
+            .hero-stats { gap: 2rem; }
+            .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .about-image { height: 300px; }
+            .about-highlights { grid-template-columns: 1fr; }
+            .timeline::before { left: 12px; }
+            .timeline-item:nth-child(odd),
+            .timeline-item:nth-child(even) {
+                padding-left: 3rem;
+                padding-right: 0;
+                text-align: left;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+            .timeline-item:nth-child(odd) .timeline-dot,
+            .timeline-item:nth-child(even) .timeline-dot {
+                left: 0;
             }
+            .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+            .projects-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .hero-title {
-                font-size: 2.2rem;
-            }
-
-            .hero-subtitle {
-                font-size: 1.2rem;
-            }
-
-            .avatar {
-                width: 140px;
-                height: 140px;
-                font-size: 3rem;
-            }
-
-            section {
-                padding: 4rem 1.5rem;
-            }
-
-            .about-content {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .about-image {
-                height: 250px;
-                font-size: 5rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .skills-grid {
-                grid-template-columns: 1fr;
-            }
+            .nav-links { display: none; }
+            .mobile-menu-btn { display: block; }
+            .hero-title { font-size: 2.5rem; }
+            .hero-subtitle { font-size: 1.2rem; }
+            .avatar { width: 150px; height: 150px; font-size: 4rem; }
+            .hero-stats { flex-direction: column; gap: 1.5rem; }
+            .stat-item::after { display: none; }
+            .section { padding: 5rem 1.5rem; }
+            .section-title { font-size: 2.2rem; }
+            .skills-grid { grid-template-columns: 1fr; }
+            .blog-grid { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 480px) {
-            .hero-title {
-                font-size: 1.8rem;
-            }
-
-            .btn {
-                padding: 0.75rem 1.5rem;
-                font-size: 0.9rem;
-            }
+            .hero-title { font-size: 2rem; }
+            .btn { padding: 0.875rem 1.5rem; font-size: 0.95rem; }
+            .section-title { font-size: 1.8rem; }
+            .scroll-indicator { bottom: 2rem; }
         }
     </style>
 </head>
 <body>
-    <nav>
+    <canvas id="particles-canvas"></canvas>
+    <div class="glow-orb glow-orb-1"></div>
+    <div class="glow-orb glow-orb-2"></div>
+    
+    <nav id="navbar">
         <div class="nav-container">
-            <a href="#hero" class="logo">Miracle</a>
-            <ul class="nav-links">
+            <a href="#hero" class="logo">
+                <span class="logo-icon">⚡</span>
+                <span>Miracle</span>
+            </a>
+            <ul class="nav-links" id="nav-links">
                 <li><a href="#hero">首页</a></li>
                 <li><a href="#about">关于</a></li>
                 <li><a href="#skills">技能</a></li>
+                <li><a href="#experience">经历</a></li>
                 <li><a href="#projects">项目</a></li>
+                <li><a href="#blog">博客</a></li>
                 <li><a href="#contact">联系</a></li>
             </ul>
             <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
@@ -476,141 +1717,2007 @@
 
     <section id="hero">
         <div class="hero-content">
-            <div class="avatar">👨‍💻</div>
+            <div class="hero-badge">
+                <span>在线可招</span>
+            </div>
+            <div class="avatar-container">
+                <div class="avatar-ring"></div>
+                <div class="avatar-ring"></div>
+                <div class="avatar">👨‍💻</div>
+            </div>
             <h1 class="hero-title">你好，我是 Miracle</h1>
-            <p class="hero-subtitle">全栈开发者 / 创意工程师</p>
-            <p class="hero-description">
-                热爱技术，专注于创建优雅且高效的解决方案。
-                用代码将想法变成现实，用设计让体验更加美好。
+            <p class="hero-subtitle">
+                <span id="typing-text">全栈开发者 / 创意工程师</span><span class="typing-cursor">|</span>
             </p>
+            <p class="hero-description">
+                热爱技术，专注于创建优雅且高效的解决方案。用代码将想法变成现实，
+                用设计让体验更加美好。持续学习，追求卓越，致力于打造有价值的产品。
+            </p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-number">5+</div>
+                    <div class="stat-label">年开发经验</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">完成项目</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">15+</div>
+                    <div class="stat-label">技术文章</div>
+                </div>
+            </div>
             <div class="cta-buttons">
-                <a href="#projects" class="btn btn-primary">查看作品</a>
-                <a href="#contact" class="btn btn-secondary">联系我</a>
+                <a href="#projects" class="btn btn-primary">
+                    <span>🚀</span>
+                    <span>查看项目</span>
+                </a>
+                <a href="#blog" class="btn btn-secondary">
+                    <span>📚</span>
+                    <span>阅读博客</span>
+                </a>
+                <a href="#" class="btn btn-outline" id="download-resume">
+                    <span>📄</span>
+                    <span>下载简历</span>
+                </a>
             </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>向下滚动</span>
+            <svg viewBox="0 0 24 24"><path d="M7 13l5 5 5-5M7 19l5-5 5 5"/></svg>
         </div>
     </section>
 
-    <section id="about">
+    <section id="about" class="section section-alt">
         <h2 class="section-title">关于我</h2>
-        <div class="about-content">
-            <div class="about-text">
-                <h3>探索无限可能</h3>
-                <p>
-                    我是一名充满热情的全栈开发者，拥有丰富的项目经验和扎实的技术功底。
-                    我相信技术的力量可以改变世界，而我的使命就是创造有意义的产品。
-                </p>
-                <p>
-                    在过去的几年里，我参与了多个项目的开发，从前端到后端，从设计到部署，
-                    每一个环节都让我收获良多。我享受解决问题的过程，也热爱学习新的技术。
-                </p>
-                <p>
-                    除了编程，我也对设计、产品思维和用户体验有着浓厚的兴趣。
-                    我相信好的产品源于对细节的极致追求和对用户的深刻理解。
-                </p>
+        <p class="section-subtitle">了解我的背景、专长和价值观</p>
+        <div class="about-grid">
+            <div class="about-image-wrapper">
+                <div class="about-image"></div>
             </div>
-            <div class="about-image">🚀</div>
+            <div class="about-content">
+                <h3>探索无限可能 🎯</h3>
+                <p>
+                    我是一名充满热情的全栈开发者，拥有扎实的计算机科学基础和丰富的项目经验。
+                    从前端到后端，从移动应用到云服务，我致力于掌握技术的各个环节，
+                    为用户提供完整的解决方案。
+                </p>
+                <p>
+                    我相信技术的力量可以改变世界，而我的使命就是创造有意义的产品。
+                    我享受解决复杂问题的过程，也热爱与团队协作将想法变为现实。
+                    持续学习是我的信条，我一直关注最新技术趋势，不断提升自己。
+                </p>
+                <div class="about-highlights">
+                    <div class="highlight-item">
+                        <div class="highlight-icon">⚡</div>
+                        <div class="highlight-text">
+                            <h4>快速学习</h4>
+                            <span>迅速掌握新技术</span>
+                        </div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-icon">🎯</div>
+                        <div class="highlight-text">
+                            <h4>目标驱动</h4>
+                            <span>专注成果导向</span>
+                        </div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-icon">🚀</div>
+                        <div class="highlight-text">
+                            <h4>创新思维</h4>
+                            <span>突破常规限制</span>
+                        </div>
+                    </div>
+                    <div class="highlight-item">
+                        <div class="highlight-icon">🤝</div>
+                        <div class="highlight-text">
+                            <h4>团队协作</h4>
+                            <span>善于沟通配合</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section id="skills">
+    <section id="skills" class="section">
         <h2 class="section-title">技能专长</h2>
-        <div class="skills-grid">
-            <div class="skill-card">
+        <p class="section-subtitle">我掌握的技术栈和工具</p>
+        <div class="skill-filters" id="skill-filters">
+            <button class="skill-filter active" data-filter="all">全部</button>
+            <button class="skill-filter" data-filter="frontend">前端</button>
+            <button class="skill-filter" data-filter="backend">后端</button>
+            <button class="skill-filter" data-filter="tools">工具</button>
+            <button class="skill-filter" data-filter="ai">AI</button>
+        </div>
+        <div class="skills-grid" id="skills-grid">
+            <div class="skill-card" data-category="frontend">
                 <div class="skill-icon">⚛️</div>
-                <h3>前端开发</h3>
-                <p>React、Vue、TypeScript、Tailwind CSS</p>
+                <h3>React / Next.js</h3>
+                <p>组件化开发、状态管理、性能优化</p>
+                <div class="skill-level">
+                    <div class="skill-level-fill" style="width: 95%"></div>
+                </div>
             </div>
-            <div class="skill-card">
-                <div class="skill-icon">🔧</div>
-                <h3>后端开发</h3>
-                <p>Node.js、Python、Go、数据库设计</p>
+            <div class="skill-card" data-category="frontend">
+                <div class="skill-icon">💚</div>
+                <h3>Vue / Nuxt.js</h3>
+                <p>Vue3 生态、组合式 API、SSR</p>
+                <div class="skill-level">
+                    <div class="skill-level-fill" style="width: 90%"></div>
+                </div>
             </div>
-            <div class="skill-card">
+            <div class="skill-card" data-category="frontend">
+                <div class="skill-icon">📘</div>
+                <h3>TypeScript</h3>
+                <p>类型安全、泛型编程、类型体操</p>
+                <div class="skill-level">
+                    <div class="skill-level-fill" style="width: 92%"></div>
+                </div>
+            </div>
+            <div class="skill-card" data-category="backend">
+                <div class="skill-icon">🟢</div>
+                <h3>Node.js</h3>
+                <p>Express、Fastify、API 设计</p>
+                <div class="skill-level">
+                    <div class="skill-level-fill" style="width: 88%"></div>
+                </div>
+            </div>
+            <div class="skill-card" data-category="backend">
+                <div class="skill-icon">🐍</div>
+                <h3>Python</h3>
+                <p>Flask、Django、数据处理</p>
+                <div class="skill-level">
+                    <div class="skill-level-fill" style="width: 82%"></div>
+                </div>
+            </div>
+            <div class="skill-card" data-category="tools">
                 <div class="skill-icon">🎨</div>
                 <h3>UI/UX 设计</h3>
-                <p>Figma、原型设计、用户研究</p>
+                <p>Figma、设计系统、用户体验</p>
+                <div class="skill-level">
+                    <div class="skill-level-fill" style="width: 80%"></div>
+                </div>
             </div>
-            <div class="skill-card">
+            <div class="skill-card" data-category="tools">
                 <div class="skill-icon">☁️</div>
-                <h3>云服务</h3>
-                <p>AWS、Docker、CI/CD、DevOps</p>
+                <h3>云服务 / DevOps</h3>
+                <p>AWS、Docker、K8s、CI/CD</p>
+                <div class="skill-level">
+                    <div class="skill-level-fill" style="width: 75%"></div>
+                </div>
             </div>
-            <div class="skill-card">
+            <div class="skill-card" data-category="ai">
                 <div class="skill-icon">🤖</div>
-                <h3>人工智能</h3>
-                <p>机器学习、深度学习、LLM 应用</p>
+                <h3>AI / 机器学习</h3>
+                <p>LLM 应用、深度学习、Prompt 工程</p>
+                <div class="skill-level">
+                    <div class="skill-level-fill" style="width: 70%"></div>
+                </div>
             </div>
-            <div class="skill-card">
-                <div class="skill-icon">📱</div>
-                <h3>移动开发</h3>
-                <p>React Native、Flutter、跨平台应用</p>
+            <div class="skill-card" data-category="frontend">
+                <div class="skill-icon">🎯</div>
+                <h3>Tailwind CSS</h3>
+                <p>实用优先、响应式设计、CSS 架构</p>
+                <div class="skill-level">
+                    <div class="skill-level-fill" style="width: 95%"></div>
+                </div>
             </div>
         </div>
     </section>
 
-    <section id="projects">
+    <section id="experience" class="section section-alt">
+        <h2 class="section-title">职业经历</h2>
+        <p class="section-subtitle">我的职业发展历程</p>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h4>高级全栈工程师</h4>
+                    <div class="company">科技创新有限公司</div>
+                    <div class="period">2022 - 至今</div>
+                    <p>负责核心产品架构设计与开发，带领团队完成多个大型项目。推动技术选型和流程优化，建立开发规范和代码审查机制。</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h4>全栈开发工程师</h4>
+                    <div class="company">互联网创业公司</div>
+                    <div class="period">2020 - 2022</div>
+                    <p>从0到1构建多个产品，负责技术架构和实现。独立完成电商平台、用户系统和数据分析平台的核心功能开发。</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h4>前端开发工程师</h4>
+                    <div class="company">知名电商平台</div>
+                    <div class="period">2019 - 2020</div>
+                    <p>参与大型电商平台前端开发，优化用户体验和页面性能。实现多个营销活动和用户界面功能。</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <h4>软件工程师</h4>
+                    <div class="company">科技咨询公司</div>
+                    <div class="period">2018 - 2019</div>
+                    <p>为企业客户提供技术解决方案，开发定制化软件系统和内部管理系统。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="section">
         <h2 class="section-title">项目作品</h2>
-        <div class="projects-grid">
-            <div class="project-card">
+        <p class="section-subtitle">精选项目展示我的技术能力</p>
+        <div class="project-filters" id="project-filters">
+            <button class="project-filter active" data-filter="all">全部</button>
+            <button class="project-filter" data-filter="web">Web 应用</button>
+            <button class="project-filter" data-filter="mobile">移动应用</button>
+            <button class="project-filter" data-filter="ai">AI 项目</button>
+        </div>
+        <div class="projects-grid" id="projects-grid">
+            <div class="project-card" data-category="web">
                 <div class="project-image">🌐</div>
                 <div class="project-content">
                     <h3>智能电商平台</h3>
-                    <p>基于 AI 推荐的现代化电商解决方案，提供个性化购物体验</p>
+                    <p>基于 AI 推荐的现代化电商解决方案，提供个性化购物体验，支持实时数据分析</p>
+                    <div class="project-meta">
+                        <span>2024</span>
+                        <span class="project-type">团队项目</span>
+                    </div>
                     <div class="project-tags">
                         <span class="tag">React</span>
                         <span class="tag">Node.js</span>
                         <span class="tag">MongoDB</span>
                     </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link" title="GitHub">🐙</a>
+                        <a href="#" class="project-link" title="在线演示">🔗</a>
+                    </div>
                 </div>
             </div>
-            <div class="project-card">
+            <div class="project-card" data-category="web">
                 <div class="project-image">📊</div>
                 <div class="project-content">
                     <h3>数据可视化仪表盘</h3>
-                    <p>实时数据分析与展示平台，助力企业决策</p>
+                    <p>实时数据分析与展示平台，支持多维度数据可视化，助力企业数据驱动决策</p>
+                    <div class="project-meta">
+                        <span>2024</span>
+                        <span class="project-type">个人项目</span>
+                    </div>
                     <div class="project-tags">
                         <span class="tag">Vue</span>
                         <span class="tag">D3.js</span>
                         <span class="tag">Python</span>
                     </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link" title="GitHub">🐙</a>
+                        <a href="#" class="project-link" title="在线演示">🔗</a>
+                    </div>
                 </div>
             </div>
-            <div class="project-card">
+            <div class="project-card" data-category="ai">
                 <div class="project-image">💬</div>
                 <div class="project-content">
-                    <h3>AI 聊天助手</h3>
-                    <p>基于大语言模型的智能对话应用</p>
+                    <h3>AI 智能助手</h3>
+                    <p>基于大语言模型的智能对话应用，支持多轮对话、文档分析和代码生成</p>
+                    <div class="project-meta">
+                        <span>2024</span>
+                        <span class="project-type">个人项目</span>
+                    </div>
                     <div class="project-tags">
                         <span class="tag">Next.js</span>
                         <span class="tag">OpenAI</span>
-                        <span class="tag">Tailwind</span>
+                        <span class="tag">LangChain</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link" title="GitHub">🐙</a>
+                        <a href="#" class="project-link" title="在线演示">🔗</a>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card" data-category="mobile">
+                <div class="project-image">📱</div>
+                <div class="project-content">
+                    <h3>健康追踪 App</h3>
+                    <p>跨平台健康管理应用，追踪运动、饮食和睡眠，提供个性化健康建议</p>
+                    <div class="project-meta">
+                        <span>2023</span>
+                        <span class="project-type">团队项目</span>
+                    </div>
+                    <div class="project-tags">
+                        <span class="tag">React Native</span>
+                        <span class="tag">Firebase</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link" title="GitHub">🐙</a>
+                        <a href="#" class="project-link" title="应用商店">📱</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="contact">
+    <section id="blog" class="section section-alt">
+        <h2 class="section-title">技术博客</h2>
+        <p class="section-subtitle">分享我的技术见解和实战经验</p>
+        <div class="blog-filters" id="blog-filters">
+            <button class="blog-filter active" data-filter="all">全部</button>
+            <button class="blog-filter" data-filter="frontend">前端</button>
+            <button class="blog-filter" data-filter="backend">后端</button>
+            <button class="blog-filter" data-filter="ai">AI</button>
+            <button class="blog-filter" data-filter="devops">DevOps</button>
+            <button class="blog-filter" data-filter="design">设计</button>
+        </div>
+        <div class="blog-grid" id="blog-grid"></div>
+    </section>
+
+    <section id="contact" class="section section-alt">
         <h2 class="section-title">联系我</h2>
-        <p class="contact-description">
-            有项目想要合作？或者只是想打个招呼？欢迎随时联系我！
-        </p>
-        <div class="social-links">
-            <a href="mailto:hello@example.com" class="social-link" title="邮件">📧</a>
-            <a href="#" class="social-link" title="GitHub">🐙</a>
-            <a href="#" class="social-link" title="LinkedIn">💼</a>
-            <a href="#" class="social-link" title="Twitter">🐦</a>
-            <a href="#" class="social-link" title="微信">💬</a>
+        <p class="section-subtitle">期待与您的合作与交流</p>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h3>联系方式 🤝</h3>
+                <p>无论是项目合作、技术交流还是只是想打个招呼，我都期待收到您的消息！</p>
+                <div class="contact-details">
+                    <a href="mailto:hello@example.com" class="contact-item">
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-text">
+                            <span class="contact-label">邮箱</span>
+                            <span class="contact-value">hello@example.com</span>
+                        </div>
+                    </a>
+                    <a href="#" class="contact-item">
+                        <div class="contact-icon">💼</div>
+                        <div class="contact-text">
+                            <span class="contact-label">LinkedIn</span>
+                            <span class="contact-value">linkedin.com/in/miracle</span>
+                        </div>
+                    </a>
+                    <a href="#" class="contact-item">
+                        <div class="contact-icon">🐙</div>
+                        <div class="contact-text">
+                            <span class="contact-label">GitHub</span>
+                            <span class="contact-value">github.com/waitforamiracle</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="contact-form-wrapper" id="contact-form-wrapper">
+                <h3>发送消息 ✉️</h3>
+                <form id="contact-form" onsubmit="handleSubmit(event)">
+                    <div class="form-group">
+                        <label for="name">姓名</label>
+                        <input type="text" id="name" required placeholder="请输入您的姓名">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">邮箱</label>
+                        <input type="email" id="email" required placeholder="请输入您的邮箱">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">主题</label>
+                        <input type="text" id="subject" required placeholder="消息主题">
+                    </div>
+                    <div class="form-group">
+                        <label for="message">消息内容</label>
+                        <textarea id="message" required placeholder="请输入您想说的内容..."></textarea>
+                    </div>
+                    <button type="submit" class="form-submit" id="submit-btn">
+                        <span>🚀</span>
+                        <span>发送消息</span>
+                    </button>
+                </form>
+                <div class="form-message" id="form-message"></div>
+            </div>
         </div>
     </section>
 
     <footer>
-        <p>&copy; 2024 Miracle. 用心创造，用爱设计 ❤️</p>
+        <div class="footer-content">
+            <div class="footer-social">
+                <a href="#" class="social-link" title="GitHub">🐙</a>
+                <a href="#" class="social-link" title="LinkedIn">💼</a>
+                <a href="#" class="social-link" title="Twitter">🐦</a>
+                <a href="#" class="social-link" title="邮箱">📧</a>
+            </div>
+            <p class="footer-text">
+                &copy; 2024 Miracle. 用心创造，用爱设计 <span class="footer-heart">❤️</span>
+            </p>
+            <ul class="footer-links">
+                <li><a href="#hero">首页</a></li>
+                <li><a href="#about">关于</a></li>
+                <li><a href="#projects">项目</a></li>
+                <li><a href="#blog">博客</a></li>
+                <li><a href="#contact">联系</a></li>
+            </ul>
+        </div>
     </footer>
 
+    <button class="back-to-top" id="back-to-top" onclick="scrollToTop()">↑</button>
+
+    <div class="blog-modal" id="blog-modal">
+        <div class="blog-modal-content">
+            <button class="blog-modal-close" onclick="closeBlogModal()">✕</button>
+            <div class="blog-modal-image" id="blog-modal-image"></div>
+            <div class="blog-modal-body">
+                <span class="blog-modal-category" id="blog-modal-category"></span>
+                <h1 class="blog-modal-title" id="blog-modal-title"></h1>
+                <div class="blog-modal-meta" id="blog-modal-meta"></div>
+                <div class="blog-modal-article" id="blog-modal-article"></div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        const blogPosts = [
+            {
+                id: 1,
+                title: "深入理解 React 18 并发特性",
+                category: "前端",
+                categoryKey: "frontend",
+                date: "2024-01-15",
+                readTime: "12分钟",
+                views: 2540,
+                comments: 18,
+                icon: "⚛️",
+                excerpt: "React 18 引入了许多令人兴奋的新特性，特别是并发渲染和 Suspense 的改进...",
+                content: `
+                    <p>React 18 引入了并发模式，这是一个重大的架构升级。本文将深入探讨这些新特性及其在实际项目中的应用。</p>
+                    
+                    <h2>什么是并发渲染？</h2>
+                    <p>并发渲染是 React 18 最重要的新特性之一。它允许 React 同时准备多个版本的 UI。这是通过新的 <code>startTransition</code> API 实现的。</p>
+                    
+                    <pre><code>import { startTransition } from 'react';
+
+function App() {
+  startTransition(() => {
+    setTab('posts');
+  });
+}</code></pre>
+                    
+                    <h2>useTransition vs useDeferredValue</h2>
+                    <p>React 18 提供了两个新的 Hook 来处理并发场景：</p>
+                    <ul>
+                        <li><code>useTransition</code>：标记非紧急更新</li>
+                        <li><code>useDeferredValue</code>：延迟值的更新</li>
+                    </ul>
+                    
+                    <h2>Suspense 的改进</h2>
+                    <p>React 18 的 Suspense 支持服务端渲染流式传输，大大提升了首屏加载性能。</p>
+                    
+                    <h2>实践建议</h2>
+                    <p>在实际项目中，我们应该：</p>
+                    <ul>
+                        <li>识别哪些更新是紧急的，哪些可以延迟</li>
+                        <li>使用 <code>useTransition</code> 包装大型列表渲染</li>
+                        <li>结合 <code>Suspense</code> 实现优雅的加载状态</li>
+                    </ul>
+                `
+            },
+            {
+                id: 2,
+                title: "Node.js 性能优化最佳实践",
+                category: "后端",
+                categoryKey: "backend",
+                date: "2024-01-12",
+                readTime: "15分钟",
+                views: 1820,
+                comments: 12,
+                icon: "🟢",
+                excerpt: "优化 Node.js 应用性能的实用技巧和策略，包括缓存、连接池和代码优化...",
+                content: `
+                    <p>Node.js 以其高性能著称，但在生产环境中仍需要针对具体场景进行优化。本文分享我在实际项目中的性能优化经验。</p>
+                    
+                    <h2>1. 使用连接池</h2>
+                    <p>数据库连接是性能瓶颈之一。使用连接池可以显著减少连接建立的开销：</p>
+                    <pre><code>const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  max: 20,
+  idleTimeoutMillis: 30000,
+});</code></pre>
+                    
+                    <h2>2. 缓存策略</h2>
+                    <p>合理使用缓存可以大幅提升响应速度：</p>
+                    <ul>
+                        <li>使用 Redis 缓存热点数据</li>
+                        <li>实现多级缓存策略</li>
+                        <li>注意缓存一致性问题</li>
+                    </ul>
+                    
+                    <h2>3. 流式处理</h2>
+                    <p>对于大文件处理，使用流可以避免内存溢出：</p>
+                    <pre><code>const fs = require('fs');
+const readStream = fs.createReadStream('largefile.txt');
+readStream.pipe(response);</code></pre>
+                `
+            },
+            {
+                id: 3,
+                title: "LLM 应用开发入门指南",
+                category: "AI",
+                categoryKey: "ai",
+                date: "2024-01-10",
+                readTime: "18分钟",
+                views: 3220,
+                comments: 25,
+                icon: "🤖",
+                excerpt: "如何快速构建基于大语言模型的应用，包括提示词工程和架构设计...",
+                content: `
+                    <p>大语言模型（LLM）正在改变软件开发的方式。本文将带你从零开始构建 LLM 应用。</p>
+                    
+                    <h2>基本架构</h2>
+                    <p>一个典型的 LLM 应用包含：</p>
+                    <ul>
+                        <li>用户界面层</li>
+                        <li>应用逻辑层</li>
+                        <li>LLM API 层</li>
+                        <li>知识库（如需要）</li>
+                    </ul>
+                    
+                    <h2>提示词工程</h2>
+                    <p>好的提示词是 LLM 应用成功的关键：</p>
+                    <pre><code>const prompt = \`你是一个专业的技术顾问。
+请用简洁易懂的语言回答用户的问题。
+上下文：\${context}
+问题：\${question}\`;</code></pre>
+                    
+                    <h2>使用 LangChain</h2>
+                    <p>LangChain 简化了 LLM 应用的开发：</p>
+                    <pre><code>import { OpenAI } from "langchain";
+const model = new OpenAI({ openAIApiKey: process.env.OPENAI_API_KEY });</code></pre>
+                `
+            },
+            {
+                id: 4,
+                title: "Docker 容器化实践指南",
+                category: "DevOps",
+                categoryKey: "devops",
+                date: "2024-01-08",
+                readTime: "14分钟",
+                views: 1560,
+                comments: 9,
+                icon: "☁️",
+                excerpt: "从开发到生产的完整容器化流程，包括 Docker Compose 和 K8s 部署...",
+                content: `
+                    <p>容器化已成为现代应用部署的标准方式。本文分享 Docker 实践经验和最佳实践。</p>
+                    
+                    <h2>Dockerfile 优化</h2>
+                    <p>一个优化的 Dockerfile 应该：</p>
+                    <ul>
+                        <li>使用多阶段构建减小镜像体积</li>
+                        <li>合理利用构建缓存</li>
+                        <li>使用 .dockerignore 排除无关文件</li>
+                    </ul>
+                    
+                    <h2>docker-compose 编排</h2>
+                    <pre><code>version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+  db:
+    image: postgres:14</code></pre>
+                `
+            },
+            {
+                id: 5,
+                title: "现代 UI 设计趋势 2024",
+                category: "设计",
+                categoryKey: "design",
+                date: "2024-01-05",
+                readTime: "10分钟",
+                views: 2100,
+                comments: 15,
+                icon: "🎨",
+                excerpt: "探索今年最热门的用户界面设计趋势，包括玻璃拟态和3D元素...",
+                content: `
+                    <p>UI 设计趋势每年都在变化。2024 年有哪些值得关注的设计方向？</p>
+                    
+                    <h2>玻璃拟态 2.0</h2>
+                    <p>玻璃拟态正在进化，更注重可用性和性能：</p>
+                    <ul>
+                        <li>半透明背景配合模糊效果</li>
+                        <li>微妙的边框和阴影</li>
+                        <li>保证文字可读性</li>
+                    </ul>
+                    
+                    <h2>3D 和空间设计</h2>
+                    <p>随着 WebGL 技术成熟，3D 元素在网页中越来越常见。</p>
+                `
+            },
+            {
+                id: 6,
+                title: "Web 应用安全防护策略",
+                category: "后端",
+                categoryKey: "backend",
+                date: "2024-01-03",
+                readTime: "16分钟",
+                views: 1920,
+                comments: 11,
+                icon: "🔒",
+                excerpt: "保护你的 Web 应用免受常见攻击，包括 XSS、CSRF 和 SQL 注入...",
+                content: `
+                    <p>安全是 Web 开发中不可忽视的重要话题。本文介绍常见攻击及防护策略。</p>
+                    
+                    <h2>XSS 防护</h2>
+                    <p>跨站脚本攻击是最常见的 Web 安全问题之一：</p>
+                    <ul>
+                        <li>对用户输入进行转义</li>
+                        <li>使用 Content Security Policy</li>
+                        <li>避免使用 innerHTML</li>
+                    </ul>
+                    
+                    <h2>CSRF 防护</h2>
+                    <p>跨站请求伪造利用用户的登录状态发起恶意请求。</p>
+                    
+                    <h2>SQL 注入防护</h2>
+                    <p>使用参数化查询可以有效防止 SQL 注入：</p>
+                    <pre><code>const query = 'SELECT * FROM users WHERE id = $1';
+client.query(query, [userId]);</code></pre>
+                `
+            },
+            {
+                id: 7,
+                title: "TypeScript 高级类型体操",
+                category: "前端",
+                categoryKey: "frontend",
+                date: "2023-12-28",
+                readTime: "20分钟",
+                views: 2850,
+                comments: 22,
+                icon: "📘",
+                excerpt: "深入 TypeScript 类型系统，掌握类型编程的高级技巧...",
+                content: `
+                    <p>TypeScript 的类型系统非常强大。本文探讨高级类型编程技巧。</p>
+                    
+                    <h2>条件类型</h2>
+                    <pre><code>type IsString<T> = T extends string ? true : false;</code></pre>
+                    
+                    <h2>映射类型</h2>
+                    <pre><code>type Readonly<T> = {
+  readonly [P in keyof T]: T[P];
+};</code></pre>
+                    
+                    <h2>模板字面量类型</h2>
+                    <p>TypeScript 4.1 引入了模板字面量类型，非常强大。</p>
+                `
+            },
+            {
+                id: 8,
+                title: "Vue 3 组合式 API 实战",
+                category: "前端",
+                categoryKey: "frontend",
+                date: "2023-12-25",
+                readTime: "13分钟",
+                views: 2360,
+                comments: 16,
+                icon: "💚",
+                excerpt: "深入理解 Vue 3 的组合式 API，包括响应式系统和生命周期...",
+                content: `
+                    <p>Vue 3 的组合式 API 提供了更灵活的组织代码方式。</p>
+                    
+                    <h2>setup 函数</h2>
+                    <p>组合式 API 的入口点：</p>
+                    <pre><code>export default {
+  setup() {
+    const count = ref(0);
+    const doubleCount = computed(() => count.value * 2);
+    return { count, doubleCount };
+  }
+}</code></pre>
+                    
+                    <h2>依赖注入</h2>
+                    <p>provide/inject 实现跨组件通信。</p>
+                `
+            },
+            {
+                id: 9,
+                title: "微服务架构设计模式",
+                category: "后端",
+                categoryKey: "backend",
+                date: "2023-12-22",
+                readTime: "18分钟",
+                views: 1680,
+                comments: 13,
+                icon: "🏛️",
+                excerpt: "探索微服务架构中的常见设计模式，包括 Saga、CQRS 和事件溯源...",
+                content: `
+                    <p>微服务架构带来灵活性的同时，也带来了复杂性。了解设计模式至关重要。</p>
+                    
+                    <h2>Saga 模式</h2>
+                    <p>处理分布式事务的两种方式：</p>
+                    <ul>
+                        <li>Choreography：服务间通过事件协作</li>
+                        <li>Orchestration：中央协调器管理流程</li>
+                    </ul>
+                    
+                    <h2>CQRS 模式</h2>
+                    <p>命令查询职责分离，优化读写性能。</p>
+                `
+            },
+            {
+                id: 10,
+                title: "Tailwind CSS 实用技巧",
+                category: "前端",
+                categoryKey: "frontend",
+                date: "2023-12-18",
+                readTime: "8分钟",
+                views: 3140,
+                comments: 28,
+                icon: "🎯",
+                excerpt: "掌握 Tailwind CSS 的高级用法，让开发更高效...",
+                content: `
+                    <p>Tailwind CSS 已成为现代前端开发的热门选择。以下是我在项目中的实用技巧。</p>
+                    
+                    <h2>自定义配置</h2>
+                    <pre><code>module.exports = {
+  theme: {
+    extend: {
+      colors: {
+        brand: '#ff5733',
+      }
+    }
+  }
+}</code></pre>
+                    
+                    <h2>组件化设计</h2>
+                    <p>使用 @apply 提取重复样式，提高代码复用性。</p>
+                `
+            },
+            {
+                id: 11,
+                title: "Python 异步编程实战",
+                category: "后端",
+                categoryKey: "backend",
+                date: "2023-12-15",
+                readTime: "14分钟",
+                views: 1980,
+                comments: 14,
+                icon: "🐍",
+                excerpt: "深入理解 Python 异步编程，包括 asyncio 和异步框架...",
+                content: `
+                    <p>Python 的 asyncio 为 I/O 密集型任务提供了强大支持。</p>
+                    
+                    <h2>async/await 基础</h2>
+                    <pre><code>import asyncio
+
+async def fetch_data():
+    await asyncio.sleep(1)
+    return "data"
+
+result = asyncio.run(fetch_data())</code></pre>
+                    
+                    <h2>异步 HTTP 请求</h2>
+                    <p>使用 aiohttp 发起并发请求：</p>
+                    <pre><code>async with aiohttp.ClientSession() as session:
+    async with session.get(url) as response:</code></pre>
+                `
+            },
+            {
+                id: 12,
+                title: "CI/CD 流水线设计",
+                category: "DevOps",
+                categoryKey: "devops",
+                date: "2023-12-12",
+                readTime: "12分钟",
+                views: 1420,
+                comments: 8,
+                icon: "🔄",
+                excerpt: "构建高效的持续集成和持续部署流水线...",
+                content: `
+                    <p>一个好的 CI/CD 流水线可以显著提升开发效率。</p>
+                    
+                    <h2>流水线阶段</h2>
+                    <ul>
+                        <li>代码检查（lint、type check）</li>
+                        <li>单元测试</li>
+                        <li>集成测试</li>
+                        <li>构建镜像</li>
+                        <li>部署到测试环境</li>
+                        <li>部署到生产环境</li>
+                    </ul>
+                `
+            },
+            {
+                id: 13,
+                title: "GraphQL 与 REST 对比",
+                category: "后端",
+                categoryKey: "backend",
+                date: "2023-12-08",
+                readTime: "11分钟",
+                views: 1750,
+                comments: 10,
+                icon: "📡",
+                excerpt: "深入分析 GraphQL 和 REST 的优劣，帮助你选择合适的 API 风格...",
+                content: `
+                    <p>选择合适的 API 风格对项目至关重要。</p>
+                    
+                    <h2>REST 的优势</h2>
+                    <ul>
+                        <li>简单易理解</li>
+                        <li>缓存机制成熟</li>
+                        <li>广泛的工具支持</li>
+                    </ul>
+                    
+                    <h2>GraphQL 的优势</h2>
+                    <ul>
+                        <li>精确获取需要的数据</li>
+                        <li>强类型 schema</li>
+                        <li>一次请求获取多资源</li>
+                    </ul>
+                `
+            },
+            {
+                id: 14,
+                title: "响应式设计最佳实践",
+                category: "设计",
+                categoryKey: "design",
+                date: "2023-12-05",
+                readTime: "9分钟",
+                views: 2230,
+                comments: 17,
+                icon: "📱",
+                excerpt: "创建真正响应式的用户体验，适配各种设备和屏幕尺寸...",
+                content: `
+                    <p>响应式设计不是简单的媒体查询，而是完整的用户体验策略。</p>
+                    
+                    <h2>移动优先策略</h2>
+                    <p>从最小屏幕开始，逐步增强体验。</p>
+                    
+                    <h2>灵活的布局</h2>
+                    <p>使用 CSS Grid 和 Flexbox 创建自适应性布局。</p>
+                    
+                    <h2>图片优化</h2>
+                    <p>使用 srcset 和 picture 元素提供适当的图片资源。</p>
+                `
+            },
+            {
+                id: 15,
+                title: "Prompt 工程进阶指南",
+                category: "AI",
+                categoryKey: "ai",
+                date: "2023-12-01",
+                readTime: "16分钟",
+                views: 2890,
+                comments: 21,
+                icon: "💡",
+                excerpt: "提升 LLM 输出质量的提示词技巧，包括少样本学习和思维链...",
+                content: `
+                    <p>Prompt 工程是 LLM 应用开发的核心技能。</p>
+                    
+                    <h2>Few-shot Learning</h2>
+                    <p>通过示例引导模型理解任务：</p>
+                    <pre><code>任务：情感分类
+示例：
+输入：这部电影太棒了！
+情感：积极
+
+输入：无聊透顶
+情感：</code></pre>
+                    
+                    <h2>Chain of Thought</h2>
+                    <p>让模型分步骤思考，提高复杂任务的准确性。</p>
+                    
+                    <h2>结构化输出</h2>
+                    <p>使用 JSON Schema 或 Markdown 格式要求输出结构。</p>
+                `
+            },
+            {
+                id: 16,
+                title: "WebAssembly 现代 Web 的性能革命",
+                category: "前端",
+                categoryKey: "frontend",
+                date: "2024-02-20",
+                readTime: "18分钟",
+                views: 1860,
+                comments: 14,
+                icon: "🚀",
+                excerpt: "探索 WebAssembly 如何改变 Web 应用的性能边界，实现原生级执行效率...",
+                content: `
+                    <p>WebAssembly（简称 WASM）是一种低级字节码格式，可以在浏览器中以接近原生的速度运行代码。</p>
+                    
+                    <h2>为什么选择 WebAssembly？</h2>
+                    <ul>
+                        <li>接近原生的执行性能</li>
+                        <li>支持多语言编译到 Web</li>
+                        <li>沙箱环境保证安全性</li>
+                        <li>与 JavaScript 无缝互操作</li>
+                    </ul>
+                    
+                    <h2>Rust + WASM 实战</h2>
+                    <p>Rust 是编译到 WASM 的理想语言：</p>
+                    <pre><code>#[wasm_bindgen]
+pub fn process_data(data: &[f32]) -> Vec<f32> {
+    data.iter().map(|x| x * 2.0).collect()
+}</code></pre>
+                    
+                    <h2>适用场景</h2>
+                    <ul>
+                        <li>图像处理和视频编解码</li>
+                        <li>游戏引擎和 3D 渲染</li>
+                        <li>加密计算和隐私计算</li>
+                        <li>科学计算和数据分析</li>
+                    </ul>
+                `
+            },
+            {
+                id: 17,
+                title: "PostgreSQL 高级特性深度解析",
+                category: "后端",
+                categoryKey: "backend",
+                date: "2024-02-18",
+                readTime: "22分钟",
+                views: 2340,
+                comments: 19,
+                icon: "🐘",
+                excerpt: "掌握 PostgreSQL 的高级特性，包括JSON支持、全文搜索、分区表和高级索引...",
+                content: `
+                    <p>PostgreSQL 不仅仅是一个关系型数据库，它的功能丰富程度堪比专用数据库系统。</p>
+                    
+                    <h2>JSONB 高效存储</h2>
+                    <p>PostgreSQL 的 JSONB 类型支持高效查询：</p>
+                    <pre><code>CREATE TABLE events (
+    id SERIAL PRIMARY KEY,
+    data JSONB,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX idx_events_data ON events USING GIN (data);
+
+SELECT * FROM events 
+WHERE data @> '{"type": "click"}';</code></pre>
+                    
+                    <h2>全文搜索</h2>
+                    <p>无需外部搜索引擎即可实现全文检索：</p>
+                    <pre><code>ALTER TABLE articles ADD COLUMN 
+    search_vector TSVECTOR;
+
+UPDATE articles SET search_vector = 
+    to_tsvector('chinese', title || ' ' || content);
+
+CREATE INDEX idx_search ON articles USING GIN(search_vector);</code></pre>
+                    
+                    <h2>分区表优化</h2>
+                    <p>对于超大型表，使用分区提升查询性能：</p>
+                    <pre><code>CREATE TABLE logs (
+    id BIGSERIAL,
+    created_at TIMESTAMP NOT NULL,
+    data JSONB
+) PARTITION BY RANGE (created_at);
+
+CREATE TABLE logs_2024 PARTITION OF logs
+    FOR VALUES FROM ('2024-01-01') TO ('2025-01-01');</code></pre>
+                `
+            },
+            {
+                id: 18,
+                title: "RAG 系统架构与最佳实践",
+                category: "AI",
+                categoryKey: "ai",
+                date: "2024-02-15",
+                readTime: "20分钟",
+                views: 3120,
+                comments: 26,
+                icon: "🔍",
+                excerpt: "构建生产级检索增强生成系统，从向量数据库选择到查询优化...",
+                content: `
+                    <p>检索增强生成（RAG）结合了向量检索和大语言模型，是构建知识问答系统的核心技术。</p>
+                    
+                    <h2>RAG 架构概览</h2>
+                    <ul>
+                        <li>文档处理：分块、向量化</li>
+                        <li>向量存储：选择合适的向量数据库</li>
+                        <li>检索策略：混合检索、重排序</li>
+                        <li>生成增强：将检索结果注入 Prompt</li>
+                    </ul>
+                    
+                    <h2>文档分块策略</h2>
+                    <p>分块大小直接影响检索质量：</p>
+                    <pre><code>class TextSplitter:
+    def __init__(self, chunk_size=500, chunk_overlap=50):
+        self.chunk_size = chunk_size
+        self.overlap = chunk_overlap
+    
+    def split(self, text):
+        chunks = []
+        for i in range(0, len(text), self.chunk_size - self.overlap):
+            chunks.append(text[i:i + self.chunk_size])
+        return chunks</code></pre>
+                    
+                    <h2>混合检索策略</h2>
+                    <p>结合稀疏检索和稠密检索，提升召回率：</p>
+                    <pre><code>query_vector = embed_model.encode(query)
+sparse_results = bm25_retriever.search(query)
+dense_results = vector_store.search(query_vector, top_k=10)
+
+# 使用 Reciprocal Rank Fusion 合并结果
+combined_results = rrf_fusion([sparse_results, dense_results])</code></pre>
+                `
+            },
+            {
+                id: 19,
+                title: "Kubernetes 生产环境最佳实践",
+                category: "DevOps",
+                categoryKey: "devops",
+                date: "2024-02-12",
+                readTime: "25分钟",
+                views: 2780,
+                comments: 22,
+                icon: "☸️",
+                excerpt: "从本地开发到生产部署，K8s 集群管理的完整指南，包括安全、配额和监控...",
+                content: `
+                    <p>Kubernetes 已成为容器编排的标准，但生产环境使用需要掌握许多关键实践。</p>
+                    
+                    <h2>资源配额设置</h2>
+                    <p>防止单个应用耗尽集群资源：</p>
+                    <pre><code>apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: my-quota
+spec:
+  hard:
+    requests.cpu: "4"
+    requests.memory: 8Gi
+    limits.cpu: "8"
+    limits.memory: 16Gi</code></pre>
+                    
+                    <h2>健康检查配置</h2>
+                    <p>正确的探针配置保证服务可用性：</p>
+                    <pre><code>spec:
+  containers:
+  - name: api
+    livenessProbe:
+      httpGet:
+        path: /health
+        port: 8080
+      initialDelaySeconds: 30
+      periodSeconds: 10
+    readinessProbe:
+      httpGet:
+        path: /ready
+        port: 8080
+      initialDelaySeconds: 5
+      periodSeconds: 5</code></pre>
+                    
+                    <h2>网络安全策略</h2>
+                    <p>使用 NetworkPolicy 限制 Pod 间通信：</p>
+                    <pre><code>apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: api-network-policy
+spec:
+  podSelector:
+    matchLabels:
+      app: api
+  policyTypes:
+  - Ingress
+  - Egress</code></pre>
+                `
+            },
+            {
+                id: 20,
+                title: "React Server Components 完全指南",
+                category: "前端",
+                categoryKey: "frontend",
+                date: "2024-02-10",
+                readTime: "16分钟",
+                views: 3450,
+                comments: 31,
+                icon: "⚡",
+                excerpt: "深入理解 React Server Components 的运行机制和最佳实践，开启 React 新纪元...",
+                content: `
+                    <p>React Server Components（RSC）是 React 18 引入的重大特性，重新定义了客户端和服务端的边界。</p>
+                    
+                    <h2>核心概念</h2>
+                    <ul>
+                        <li>Server Components：在服务端渲染，可访问后端资源</li>
+                        <li>Client Components：在客户端渲染，支持交互</li>
+                        <li>混用策略：根据需求选择组件类型</li>
+                    </ul>
+                    
+                    <h2>服务端数据获取</h2>
+                    <p>Server Components 可以直接访问数据库：</p>
+                    <pre><code>// app/posts/page.tsx (Server Component)
+async function PostsPage() {
+  const posts = await db.query('SELECT * FROM posts');
+  
+  return (
+    <main>
+      {posts.map(post => (
+        <PostCard key={post.id} post={post} />
+      ))}
+    </main>
+  );
+}</code></pre>
+                    
+                    <h2>客户端交互</h2>
+                    <p>使用 'use client' 声明客户端组件：</p>
+                    <pre><code>'use client';
+
+import { useState } from 'react';
+
+export function LikeButton({ initialCount }) {
+  const [count, setCount] = useState(initialCount);
+  return <button onClick={() => setCount(c => c + 1)}>{count}</button>;
+}</code></pre>
+                `
+            },
+            {
+                id: 21,
+                title: "Redis 高级应用与缓存策略",
+                category: "后端",
+                categoryKey: "backend",
+                date: "2024-02-08",
+                readTime: "19分钟",
+                views: 2560,
+                comments: 18,
+                icon: "🔴",
+                excerpt: "深入 Redis 数据结构，设计高效的缓存策略和分布式锁实现...",
+                content: `
+                    <p>Redis 不仅是简单的 KV 存储，其丰富的数据结构可以解决各种复杂的缓存和存储问题。</p>
+                    
+                    <h2>有序集合实现排行榜</h2>
+                    <p>使用 ZSET 实现高效排行：</p>
+                    <pre><code>ZADD leaderboard 1000 "user:123"
+ZADD leaderboard 2500 "user:456"
+ZADD leaderboard 800 "user:789"
+
+# 获取 Top 10
+ZREVRANGE leaderboard 0 9 WITHSCORES
+
+# 获取用户排名
+ZREVRANK leaderboard "user:456"</code></pre>
+                    
+                    <h2>分布式锁实现</h2>
+                    <p>使用 Redlock 算法保证锁的安全性：</p>
+                    <pre><code>const lock = await redis.set(
+  'lock:order:' + orderId,
+  uuid,
+  'NX',
+  'PX',
+  30000
+);
+
+if (lock) {
+  try {
+    await processOrder(orderId);
+  } finally {
+    if (await redis.get('lock:order:' + orderId) === uuid) {
+      await redis.del('lock:order:' + orderId);
+    }
+  }
+}</code></pre>
+                    
+                    <h2>缓存策略</h2>
+                    <ul>
+                        <li>Cache-Aside：应用负责读写缓存</li>
+                        <li>Read-Through：缓存自动加载</li>
+                        <li>Write-Through：同步写入缓存和存储</li>
+                        <li>Write-Behind：异步写入存储</li>
+                    </ul>
+                `
+            },
+            {
+                id: 22,
+                title: "AI Agent 系统设计",
+                category: "AI",
+                categoryKey: "ai",
+                date: "2024-02-05",
+                readTime: "23分钟",
+                views: 3890,
+                comments: 35,
+                icon: "🤖",
+                excerpt: "构建自主执行任务的 AI Agent，从 ReAct 模式到多 Agent 协作系统...",
+                content: `
+                    <p>AI Agent 是能够自主规划、执行和学习的智能系统，是 AGI 发展的重要方向。</p>
+                    
+                    <h2>Agent 核心组件</h2>
+                    <ul>
+                        <li>规划器：分解任务、制定执行计划</li>
+                        <li>记忆系统：短期记忆 + 长期记忆</li>
+                        <li>工具使用：调用外部 API 和工具</li>
+                        <li>执行器：按计划执行任务</li>
+                    </ul>
+                    
+                    <h2>ReAct 模式实现</h2>
+                    <p>结合推理和行动的 Agent 框架：</p>
+                    <pre><code>class ReActAgent:
+    def __init__(self, llm, tools):
+        self.llm = llm
+        self.tools = tools
+    
+    def run(self, task):
+        observation = ""
+        thought = ""
+        
+        for _ in range(max_iterations):
+            prompt = f"任务: {task}\n思考: {thought}\n观察: {observation}"
+            response = self.llm.generate(prompt)
+            
+            action = parse_action(response)
+            if action.type == 'finish':
+                return action.result
+            
+            observation = self.execute_tool(action)
+            thought = response</code></pre>
+                    
+                    <h2>多 Agent 协作</h2>
+                    <p>设计 Agent 团队分工协作：</p>
+                    <pre><code>planner_agent = Agent(role="规划专家", goal="拆解任务")
+researcher_agent = Agent(role="研究员", goal="收集信息")
+writer_agent = Agent(role="作家", goal="撰写内容")
+reviewer_agent = Agent(role="审核", goal="质量把控")
+
+# 协作流程
+plan = planner_agent.create_plan(task)
+context = researcher_agent.gather(plan)
+draft = writer_agent.write(context)
+result = reviewer_agent.review(draft)</code></pre>
+                `
+            },
+            {
+                id: 23,
+                title: "Git 工作流与团队协作",
+                category: "DevOps",
+                categoryKey: "devops",
+                date: "2024-02-02",
+                readTime: "14分钟",
+                views: 1980,
+                comments: 12,
+                icon: "🔀",
+                excerpt: "团队协作的 Git 最佳实践，包括分支策略、代码审查和版本发布管理...",
+                content: `
+                    <p>良好的 Git 工作流是团队协作的基础，选择合适的策略可以大幅提升开发效率。</p>
+                    
+                    <h2>分支策略选择</h2>
+                    <p>GitFlow vs GitHub Flow：</p>
+                    <ul>
+                        <li>GitFlow：适合有固定发布周期的项目</li>
+                        <li>GitHub Flow：适合持续部署的 Web 应用</li>
+                        <li>Trunk-based：追求快速集成</li>
+                    </ul>
+                    
+                    <h2>Commit 规范</h2>
+                    <p>使用 Conventional Commits 统一提交风格：</p>
+                    <pre><code>feat: 添加用户登录功能
+fix: 修复支付回调偶发性失败
+docs: 更新 API 文档
+style: 格式化代码
+refactor: 重构用户认证模块
+test: 添加单元测试
+chore: 升级依赖版本</code></pre>
+                    
+                    <h2>代码审查清单</h2>
+                    <ul>
+                        <li>代码逻辑是否正确</li>
+                        <li>是否有潜在的性能问题</li>
+                        <li>边界条件和异常处理</li>
+                        <li>测试覆盖是否充分</li>
+                        <li>代码风格是否一致</li>
+                    </ul>
+                `
+            },
+            {
+                id: 24,
+                title: "CSS 架构设计模式",
+                category: "前端",
+                categoryKey: "frontend",
+                date: "2024-01-30",
+                readTime: "15分钟",
+                views: 1670,
+                comments: 13,
+                icon: "🎨",
+                excerpt: "从 BEM 到 CSS-in-JS，探索现代 CSS 架构的最佳实践...",
+                content: `
+                    <p>随着项目规模增长，CSS 架构变得越来越重要。良好的架构可以提升代码可维护性。</p>
+                    
+                    <h2>BEM 命名规范</h2>
+                    <p>Block Element Modifier 是一种经典的 CSS 命名方法：</p>
+                    <pre><code>.card { }
+.card__header { }
+.card__body { }
+.card__button--primary { }
+.card__button--secondary { }
+
+.card--highlighted { }</code></pre>
+                    
+                    <h2>CSS Modules</h2>
+                    <p>局部作用域的 CSS 解决方案：</p>
+                    <pre><code>/* Button.module.css */
+.button {
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+.primary {
+  background: blue;
+  color: white;
+}
+
+/* Component.jsx */
+import styles from './Button.module.css';
+
+export function Button({ variant = 'primary' }) {
+  return (
+    <button className={styles[variant]}>
+      Click
+    </button>
+  );
+}</code></pre>
+                    
+                    <h2>设计令牌系统</h2>
+                    <p>统一管理设计决策：</p>
+                    <pre><code>:root {
+  --color-primary: #3b82f6;
+  --spacing-base: 4px;
+  --radius-small: 4px;
+  --radius-medium: 8px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.1);
+}</code></pre>
+                `
+            },
+            {
+                id: 25,
+                title: "API 设计与版本管理策略",
+                category: "后端",
+                categoryKey: "backend",
+                date: "2024-01-28",
+                readTime: "17分钟",
+                views: 2890,
+                comments: 21,
+                icon: "🔌",
+                excerpt: "RESTful API 设计原则、GraphQL Schema 设计与 API 版本控制策略...",
+                content: `
+                    <p>良好的 API 设计是系统可扩展性的基础，需要考虑可读性、一致性和演进能力。</p>
+                    
+                    <h2>RESTful 最佳实践</h2>
+                    <ul>
+                        <li>使用名词而非动词：/users 而非 /getUsers</li>
+                        <li>使用复数形式保持一致：/users/123</li>
+                        <li>使用 HTTP 方法表达操作：GET/POST/PUT/DELETE</li>
+                        <li>使用查询参数进行过滤和分页</li>
+                    </ul>
+                    
+                    <h2>错误响应规范</h2>
+                    <p>统一的错误格式便于客户端处理：</p>
+                    <pre><code>{
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "请求参数验证失败",
+    "details": [
+      {
+        "field": "email",
+        "message": "邮箱格式不正确"
+      },
+      {
+        "field": "password",
+        "message": "密码长度不足8位"
+      }
+    ],
+    "requestId": "req_abc123"
+  }
+}</code></pre>
+                    
+                    <h2>API 版本控制</h2>
+                    <p>三种常见的版本策略：</p>
+                    <ul>
+                        <li>URL 路径版本：/api/v1/users</li>
+                        <li>Header 版本：Accept: application/vnd.api+json; version=1</li>
+                        <li>查询参数：/api/users?version=1</li>
+                    </ul>
+                `
+            },
+            {
+                id: 26,
+                title: "移动端性能优化实战",
+                category: "前端",
+                categoryKey: "frontend",
+                date: "2024-01-25",
+                readTime: "18分钟",
+                views: 2120,
+                comments: 16,
+                icon: "📲",
+                excerpt: "从网络、图片、渲染等多个维度优化移动端 Web 应用性能...",
+                content: `
+                    <p>移动端设备的计算能力和网络环境与桌面端有显著差异，需要专门的优化策略。</p>
+                    
+                    <h2>网络优化</h2>
+                    <ul>
+                        <li>启用 HTTP/2 多路复用</li>
+                        <li>使用 Brotli 或 Zstd 压缩</li>
+                        <li>资源预加载和预连接</li>
+                        <li>接口合并减少请求数</li>
+                    </ul>
+                    
+                    <h2>图片优化</h2>
+                    <p>使用现代图片格式和响应式图片：</p>
+                    <pre><code><picture>
+  <source 
+    type="image/avif"
+    srcset="image.avif 1x, image@2x.avif 2x">
+  <source 
+    type="image/webp"
+    srcset="image.webp 1x, image@2x.webp 2x">
+  <img 
+    src="image.jpg" 
+    alt="描述"
+    loading="lazy"
+    decoding="async">
+</picture></code></pre>
+                    
+                    <h2>渲染优化</h2>
+                    <p>减少重排和重绘：</p>
+                    <pre><code>// 避免布局抖动
+const fragment = document.createDocumentFragment();
+items.forEach(item => {
+  const el = createItem(item);
+  fragment.appendChild(el);
+});
+container.appendChild(fragment);
+
+// 使用 transform 替代位置属性
+element.style.transform = 'translateX(100px)';
+element.style.willChange = 'transform';</code></pre>
+                `
+            },
+            {
+                id: 27,
+                title: "监控与可观测性架构设计",
+                category: "DevOps",
+                categoryKey: "devops",
+                date: "2024-01-22",
+                readTime: "21分钟",
+                views: 1560,
+                comments: 11,
+                icon: "📊",
+                excerpt: "构建完整的可观测性体系，涵盖 Metrics、Logs、Traces 三大支柱...",
+                content: `
+                    <p>可观测性是现代分布式系统的必备能力，帮助快速定位和解决问题。</p>
+                    
+                    <h2>三大支柱</h2>
+                    <ul>
+                        <li>Metrics：数值指标，关注聚合趋势</li>
+                        <li>Logs：日志记录，关注事件详情</li>
+                        <li>Traces：分布式追踪，关注请求链路</li>
+                    </ul>
+                    
+                    <h2>Prometheus + Grafana 监控体系</h2>
+                    <p>指标采集和可视化展示：</p>
+                    <pre><code># Prometheus 配置
+scrape_configs:
+  - job_name: 'api-service'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['api:8080']
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: instance
+
+# Grafana 告警规则
+- alert: HighErrorRate
+  expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.05
+  for: 5m
+  labels:
+    severity: critical</code></pre>
+                    
+                    <h2>分布式追踪</h2>
+                    <p>使用 OpenTelemetry 实现无侵入式追踪：</p>
+                    <pre><code>from opentelemetry import trace
+from opentelemetry.sdk.trace import TracerProvider
+
+provider = TracerProvider()
+trace.set_tracer_provider(provider)
+
+tracer = trace.get_tracer(__name__)
+
+with tracer.start_as_current_span("process_order") as span:
+    span.set_attribute("order.id", order_id)
+    payment_result = process_payment(order_id)
+    span.set_attribute("payment.status", payment_result.status)</code></pre>
+                `
+            },
+            {
+                id: 28,
+                title: "TypeScript 装饰器与元编程",
+                category: "前端",
+                categoryKey: "frontend",
+                date: "2024-01-20",
+                readTime: "19分钟",
+                views: 1780,
+                comments: 14,
+                icon: "✨",
+                excerpt: "探索 TypeScript 装饰器实现 AOP 编程、依赖注入和类验证...",
+                content: `
+                    <p>TypeScript 装饰器开启了一种新的元编程方式，可以优雅地实现横切关注点。</p>
+                    
+                    <h2>装饰器基础</h2>
+                    <p>五种装饰器类型：</p>
+                    <ul>
+                        <li>类装饰器：修改类本身</li>
+                        <li>方法装饰器：修改类方法</li>
+                        <li>访问器装饰器：修改属性访问器</li>
+                        <li>属性装饰器：修改类属性</li>
+                        <li>参数装饰器：修改函数参数</li>
+                    </ul>
+                    
+                    <h2>日志装饰器实现</h2>
+                    <pre><code>function Log(target: any, key: string, descriptor: PropertyDescriptor) {
+  const original = descriptor.value;
+  
+  descriptor.value = function(...args: any[]) {
+    console.log(\`Calling \${key} with:\`, args);
+    const result = original.apply(this, args);
+    console.log(\`\${key} returned:\`, result);
+    return result;
+  };
+  
+  return descriptor;
+}
+
+class Calculator {
+  @Log
+  add(a: number, b: number) {
+    return a + b;
+  }
+}</code></pre>
+                    
+                    <h2>依赖注入容器</h2>
+                    <p>使用装饰器实现简易 DI 容器：</p>
+                    <pre><code>const injectables = new Map();
+
+function Injectable(token: string) {
+  return (target: any) => {
+    injectables.set(token, target);
+  };
+}
+
+function inject(token: string) {
+  return (target: any, _: string, index: number) => {
+    // 存储参数索引和 token
+  };
+}
+
+@Injectable('UserService')
+class UserService { }
+
+class UserController {
+  constructor(@inject('UserService') private userService: UserService) { }
+}</code></pre>
+                `
+            },
+            {
+                id: 29,
+                title: "数据库事务与并发控制",
+                category: "后端",
+                categoryKey: "backend",
+                date: "2024-01-18",
+                readTime: "20分钟",
+                views: 2340,
+                comments: 17,
+                icon: "🔐",
+                excerpt: "深入理解 ACID 特性、隔离级别、死锁处理和乐观并发控制...",
+                content: `
+                    <p>数据库事务和并发控制是后端开发的核心知识，理解它们对于构建可靠系统至关重要。</p>
+                    
+                    <h2>ACID 特性</h2>
+                    <ul>
+                        <li>Atomicity：原子性，事务要么全成功要么全失败</li>
+                        <li>Consistency：一致性，事务前后数据库状态一致</li>
+                        <li>Isolation：隔离性，并发事务互不干扰</li>
+                        <li>Durability：持久性，提交的事务不会丢失</li>
+                    </ul>
+                    
+                    <h2>隔离级别对比</h2>
+                    <pre><code>-- 读未提交（可能脏读）
+SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED;
+
+-- 读已提交（防止脏读）
+SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+
+-- 可重复读（防止不可重复读）
+SET TRANSACTION ISOLATION LEVEL REPEATABLE READ;
+
+-- 串行化（完全隔离，性能最差）
+SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;</code></pre>
+                    
+                    <h2>乐观并发控制</h2>
+                    <p>通过版本号实现无锁更新：</p>
+                    <pre><code>-- 更新时检查版本
+UPDATE products 
+SET 
+  stock = stock - 1,
+  version = version + 1
+WHERE 
+  id = 123 
+  AND version = 5 
+  AND stock > 0;
+
+-- 检查影响行数
+-- 如果为 0，说明版本冲突，需要重试</code></pre>
+                `
+            },
+            {
+                id: 30,
+                title: "现代加密货币技术解析",
+                category: "后端",
+                categoryKey: "backend",
+                date: "2024-01-15",
+                readTime: "22分钟",
+                views: 1450,
+                comments: 9,
+                icon: "₿",
+                excerpt: "区块链、共识机制、智能合约与 Web3 技术栈深度解析...",
+                content: `
+                    <p>加密货币背后的区块链技术正在革新价值存储和传输方式。</p>
+                    
+                    <h2>区块链核心概念</h2>
+                    <ul>
+                        <li>分布式账本：所有节点共享同一账本</li>
+                        <li>共识机制：PoW、PoS、DPoS</li>
+                        <li>密码学保证：哈希函数、数字签名</li>
+                        <li>激励机制：代币经济设计</li>
+                    </ul>
+                    
+                    <h2>智能合约开发</h2>
+                    <p>Solidity 基础语法：</p>
+                    <pre><code>// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract Token {
+    mapping(address => uint256) public balanceOf;
+    
+    event Transfer(address indexed from, address indexed to, uint256 value);
+    
+    function transfer(address to, uint256 amount) public {
+        require(balanceOf[msg.sender] >= amount);
+        balanceOf[msg.sender] -= amount;
+        balanceOf[to] += amount;
+        emit Transfer(msg.sender, to, amount);
+    }
+}</code></pre>
+                    
+                    <h2>DeFi 核心协议</h2>
+                    <ul>
+                        <li>AMM：自动做市商（如 Uniswap）</li>
+                        <li>借贷协议（如 Aave）</li>
+                        <li>稳定币（如 DAI）</li>
+                        <li>跨链桥（如 Wormhole）</li>
+                    </ul>
+                `
+            },
+            {
+                id: 31,
+                title: "前端架构模式深度解析",
+                category: "前端",
+                categoryKey: "frontend",
+                date: "2024-01-12",
+                readTime: "17分钟",
+                views: 2890,
+                comments: 23,
+                icon: "🏗️",
+                excerpt: "从 MVC 到 CQRS，探索前端应用架构的演进之路...",
+                content: `
+                    <p>前端架构设计直接影响应用的可维护性、可扩展性和开发效率。</p>
+                    
+                    <h2>MVC vs MVP vs MVVM</h2>
+                    <p>经典架构模式对比：</p>
+                    <ul>
+                        <li><strong>MVC</strong>：Model-View-Controller，控制器处理用户输入</li>
+                        <li><strong>MVP</strong>：Model-View-Presenter，Presenter 承担逻辑</li>
+                        <li><strong>MVVM</strong>：Model-View-ViewModel，双向数据绑定</li>
+                    </ul>
+                    
+                    <h2>Flux 架构与 Redux</h2>
+                    <p>单向数据流的实现：</p>
+                    <pre><code>// Action 定义
+const addTodo = (text) => ({
+  type: 'ADD_TODO',
+  payload: { text, completed: false }
+});
+
+// Reducer 处理状态更新
+function todoReducer(state = [], action) {
+  switch (action.type) {
+    case 'ADD_TODO':
+      return [...state, action.payload];
+    case 'TOGGLE_TODO':
+      return state.map(todo =>
+        todo.id === action.payload
+          ? { ...todo, completed: !todo.completed }
+          : todo
+      );
+    default:
+      return state;
+  }
+}</code></pre>
+                    
+                    <h2>DDD 在前端的应用</h2>
+                    <p>将领域驱动设计引入前端：</p>
+                    <pre><code>// 领域模型
+class Order {
+  constructor(items, customer) {
+    this.items = items;
+    this.customer = customer;
+    this.status = 'pending';
+  }
+  
+  calculateTotal() {
+    return this.items.reduce(
+      (sum, item) => sum + item.price * item.quantity, 0
+    );
+  }
+  
+  confirm() {
+    if (this.items.length === 0) {
+      throw new DomainError('订单不能为空');
+    }
+    this.status = 'confirmed';
+  }
+}</code></pre>
+                `
+            },
+            {
+                id: 32,
+                title: "系统设计：设计高可用架构",
+                category: "后端",
+                categoryKey: "backend",
+                date: "2024-01-10",
+                readTime: "24分钟",
+                views: 3560,
+                comments: 28,
+                icon: "🏢",
+                excerpt: "从理论到实践，设计具备高可用性、可扩展性的分布式系统...",
+                content: `
+                    <p>高可用架构设计是后端工程师的核心技能，需要综合考虑多个维度的可靠性。</p>
+                    
+                    <h2>高可用核心原则</h2>
+                    <ul>
+                        <li><strong>消除单点故障</strong>：冗余部署、自动故障转移</li>
+                        <li><strong>故障隔离</strong>：舱壁模式、限流熔断</li>
+                        <li><strong>优雅降级</strong>：非核心功能优先降级</li>
+                        <li><strong>可观测性</strong>：完善的监控和告警</li>
+                    </ul>
+                    
+                    <h2>负载均衡策略</h2>
+                    <p>多种负载均衡算法对比：</p>
+                    <pre><code>// Round Robin
+function roundRobin(instances, index) {
+  return instances[index % instances.length];
+}
+
+// Weighted Round Robin
+function weightedRoundRobin(instances) {
+  // 根据权重分配请求
+}
+
+// Least Connections
+function leastConnections(instances) {
+  return instances.reduce((min, inst) => 
+    inst.connections < min.connections ? inst : min
+  );
+}</code></pre>
+                    
+                    <h2>缓存架构设计</h2>
+                    <p>多级缓存架构：</p>
+                    <pre><code>┌─────────────┐
+│   Browser   │ ← LocalStorage, SessionStorage
+└──────┬──────┘
+       │ Cache-Control
+┌──────▼──────┐
+│    CDN      │ ← 静态资源边缘缓存
+└──────┬──────┘
+       │ Hit/Miss
+┌──────▼──────┐
+│ Redis Cache │ ← 热点数据缓存
+└──────┬──────┘
+       │ Hit/Miss
+┌──────▼──────┐
+│  Database   │ ← 主数据库
+└─────────────┘</code></pre>
+                `
+            }
+        ];
+
+        function renderBlogCards(filter = 'all') {
+            const grid = document.getElementById('blog-grid');
+            grid.innerHTML = '';
+            
+            const filteredPosts = filter === 'all' 
+                ? blogPosts 
+                : blogPosts.filter(post => post.categoryKey === filter);
+            
+            filteredPosts.forEach(post => {
+                const card = document.createElement('div');
+                card.className = 'blog-card';
+                card.dataset.category = post.categoryKey;
+                card.onclick = () => openBlogModal(post);
+                
+                card.innerHTML = `
+                    <div class="blog-image">${post.icon}</div>
+                    <div class="blog-content">
+                        <span class="blog-category">${post.category}</span>
+                        <h3>${post.title}</h3>
+                        <p class="blog-excerpt">${post.excerpt}</p>
+                        <div class="blog-footer">
+                            <span>${post.date}</span>
+                            <div class="blog-stats">
+                                <span class="blog-stat">👁️ ${post.views >= 1000 ? (post.views/1000).toFixed(1) + 'k' : post.views}</span>
+                                <span class="blog-stat">💬 ${post.comments}</span>
+                            </div>
+                        </div>
+                        <div class="blog-read-more">
+                            阅读全文 →
+                        </div>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+                
+                setTimeout(() => {
+                    card.classList.add('visible');
+                }, 100);
+            });
+        }
+
+        function openBlogModal(post) {
+            const modal = document.getElementById('blog-modal');
+            document.getElementById('blog-modal-image').textContent = post.icon;
+            document.getElementById('blog-modal-category').textContent = post.category;
+            document.getElementById('blog-modal-title').textContent = post.title;
+            document.getElementById('blog-modal-meta').innerHTML = `
+                <span>📅 ${post.date}</span>
+                <span>⏱️ ${post.readTime}</span>
+                <span>👁️ ${post.views} 阅读</span>
+                <span>💬 ${post.comments} 评论</span>
+            `;
+            document.getElementById('blog-modal-article').innerHTML = post.content;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeBlogModal() {
+            document.getElementById('blog-modal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('blog-modal').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) {
+                closeBlogModal();
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeBlogModal();
+            }
+        });
+
+        document.getElementById('blog-filters').addEventListener('click', (e) => {
+            if (e.target.classList.contains('blog-filter')) {
+                document.querySelectorAll('.blog-filter').forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                renderBlogCards(e.target.dataset.filter);
+            }
+        });
+
+        renderBlogCards();
+
+        const navbar = document.getElementById('navbar');
+        const navLinks = document.getElementById('nav-links');
+        const backToTop = document.getElementById('back-to-top');
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.opacity = Math.random() * 0.5 + 0.1;
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(88, 166, 255, ${this.opacity})`;
+                ctx.fill();
+            }
+        }
+
+        const particles = [];
+        for (let i = 0; i < 80; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            particles.forEach((p1, i) => {
+                particles.slice(i + 1).forEach(p2 => {
+                    const dx = p1.x - p2.x;
+                    const dy = p1.y - p2.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(p1.x, p1.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(88, 166, 255, ${0.08 * (1 - dist / 150)})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                });
+            });
+
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 80) {
+                navbar.classList.add('scrolled');
+                backToTop.classList.add('visible');
+            } else {
+                navbar.classList.remove('scrolled');
+                backToTop.classList.remove('visible');
+            }
+
+            const sections = ['hero', 'about', 'skills', 'experience', 'projects', 'blog', 'contact'];
+            let current = '';
+
+            sections.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top <= 150 && rect.bottom >= 150) {
+                        current = id;
+                    }
+                }
+            });
+
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
         function toggleMenu() {
-            const navLinks = document.querySelector('.nav-links');
             if (navLinks.style.display === 'flex') {
                 navLinks.style.display = 'none';
             } else {
@@ -621,18 +3728,20 @@
                 navLinks.style.left = '0';
                 navLinks.style.right = '0';
                 navLinks.style.background = 'rgba(13, 17, 23, 0.98)';
+                navLinks.style.backdropFilter = 'blur(15px)';
                 navLinks.style.padding = '2rem';
                 navLinks.style.gap = '1.5rem';
+                navLinks.style.borderBottom = '1px solid var(--border)';
             }
         }
 
         window.addEventListener('resize', () => {
-            const navLinks = document.querySelector('.nav-links');
             if (window.innerWidth > 768) {
                 navLinks.style.display = 'flex';
                 navLinks.style.flexDirection = 'row';
                 navLinks.style.position = 'static';
                 navLinks.style.padding = '0';
+                navLinks.style.borderBottom = 'none';
             } else {
                 navLinks.style.display = 'none';
             }
@@ -641,10 +3750,155 @@
         document.querySelectorAll('.nav-links a').forEach(link => {
             link.addEventListener('click', () => {
                 if (window.innerWidth <= 768) {
-                    document.querySelector('.nav-links').style.display = 'none';
+                    navLinks.style.display = 'none';
                 }
             });
         });
+
+        const phrases = [
+            '全栈开发者 / 创意工程师',
+            '热爱技术的创造者',
+            '用代码改变世界',
+            '5年+ 开发经验'
+        ];
+        let phraseIdx = 0;
+        let charIdx = 0;
+        const typingEl = document.getElementById('typing-text');
+
+        function typeWriter() {
+            if (charIdx < phrases[phraseIdx].length) {
+                typingEl.textContent = phrases[phraseIdx].substring(0, charIdx + 1);
+                charIdx++;
+                setTimeout(typeWriter, 100);
+            } else {
+                setTimeout(eraseText, 2500);
+            }
+        }
+
+        function eraseText() {
+            if (charIdx > 0) {
+                typingEl.textContent = phrases[phraseIdx].substring(0, charIdx - 1);
+                charIdx--;
+                setTimeout(eraseText, 50);
+            } else {
+                phraseIdx = (phraseIdx + 1) % phrases.length;
+                setTimeout(typeWriter, 400);
+            }
+        }
+
+        setTimeout(typeWriter, 800);
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+
+                    if (entry.target.classList.contains('skill-card')) {
+                        const levelBar = entry.target.querySelector('.skill-level-fill');
+                        if (levelBar) {
+                            const width = levelBar.style.width;
+                            levelBar.style.width = '0';
+                            setTimeout(() => {
+                                levelBar.style.width = width;
+                            }, 100);
+                        }
+                    }
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.section-title, .about-image-wrapper, .about-content, .skill-card, .timeline-item, .project-card, .blog-card, .contact-info, .contact-form-wrapper').forEach(el => {
+            observer.observe(el);
+        });
+
+        document.getElementById('skill-filters').addEventListener('click', (e) => {
+            if (e.target.classList.contains('skill-filter')) {
+                document.querySelectorAll('.skill-filter').forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                const filter = e.target.dataset.filter;
+
+                document.querySelectorAll('.skill-card').forEach(card => {
+                    if (filter === 'all' || card.dataset.category === filter) {
+                        card.classList.remove('filter-hidden');
+                    } else {
+                        card.classList.add('filter-hidden');
+                    }
+                });
+            }
+        });
+
+        document.getElementById('project-filters').addEventListener('click', (e) => {
+            if (e.target.classList.contains('project-filter')) {
+                document.querySelectorAll('.project-filter').forEach(btn => btn.classList.remove('active'));
+                e.target.classList.add('active');
+                const filter = e.target.dataset.filter;
+
+                document.querySelectorAll('.project-card').forEach(card => {
+                    if (filter === 'all' || card.dataset.category === filter) {
+                        card.classList.remove('filter-hidden');
+                    } else {
+                        card.classList.add('filter-hidden');
+                    }
+                });
+            }
+        });
+
+        document.getElementById('download-resume').addEventListener('click', (e) => {
+            e.preventDefault();
+            const content = `# Miracle - 个人简历
+
+## 联系方式
+- 邮箱: hello@example.com
+- GitHub: github.com/waitforamiracle
+- LinkedIn: linkedin.com/in/miracle
+
+## 个人简介
+全栈开发者，5年+开发经验。热爱技术，专注于创建优雅且高效的解决方案。
+
+## 技能专长
+- 前端: React, Vue, TypeScript, Tailwind CSS
+- 后端: Node.js, Python, Go
+- 工具: Docker, AWS, Git, CI/CD
+- AI: LLM应用, 机器学习, Prompt工程
+
+---
+生成时间: ${new Date().toLocaleDateString('zh-CN')}`;
+
+            const blob = new Blob([content], { type: 'text/markdown;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Miracle_简历.md';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        function handleSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submit-btn');
+            const msg = document.getElementById('form-message');
+
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳</span><span>发送中...</span>';
+
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerHTML = '<span>🚀</span><span>发送消息</span>';
+                msg.textContent = '✅ 消息发送成功！我会尽快回复您。';
+                msg.className = 'form-message success';
+                msg.style.display = 'block';
+
+                document.getElementById('contact-form').reset();
+
+                setTimeout(() => {
+                    msg.style.display = 'none';
+                }, 5000);
+            }, 1500);
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
     </script>
 </body>
 </html>
