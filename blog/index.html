@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Miracle's Blog | 技术博客</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/blog.css">
+</head>
+<body>
+    <nav class="blog-nav">
+        <div class="nav-container">
+            <a href="../index.html" class="logo">Miracle</a>
+            <ul class="nav-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="index.html" class="active">博客</a></li>
+                <li><a href="../index.html#about">关于</a></li>
+            </ul>
+            <button class="mobile-menu-btn" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <header class="blog-header">
+        <div class="header-content">
+            <h1>技术博客</h1>
+            <p>分享技术心得，记录成长历程</p>
+        </div>
+    </header>
+
+    <main class="blog-main">
+        <div class="container">
+            <aside class="sidebar">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="搜索文章...">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+
+                <div class="category-filter">
+                    <h3><i class="fas fa-folder-open"></i> 分类</h3>
+                    <ul class="category-list">
+                        <li class="category-item active" data-category="all">
+                            <i class="fas fa-th-large"></i> 全部
+                            <span class="count" id="count-all">0</span>
+                        </li>
+                        <li class="category-item" data-category="frontend">
+                            <i class="fab fa-react"></i> 前端开发
+                            <span class="count" id="count-frontend">0</span>
+                        </li>
+                        <li class="category-item" data-category="backend">
+                            <i class="fas fa-server"></i> 后端开发
+                            <span class="count" id="count-backend">0</span>
+                        </li>
+                        <li class="category-item" data-category="ai">
+                            <i class="fas fa-brain"></i> AI/机器学习
+                            <span class="count" id="count-ai">0</span>
+                        </li>
+                        <li class="category-item" data-category="cloud">
+                            <i class="fas fa-cloud"></i> 云原生/DevOps
+                            <span class="count" id="count-cloud">0</span>
+                        </li>
+                        <li class="category-item" data-category="other">
+                            <i class="fas fa-lightbulb"></i> 其他
+                            <span class="count" id="count-other">0</span>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+
+            <section class="articles-section">
+                <div class="articles-header">
+                    <h2 id="sectionTitle">全部文章</h2>
+                    <p id="articleCount">0 篇文章</p>
+                </div>
+                <div class="articles-grid" id="articlesGrid">
+                </div>
+                <div class="pagination" id="pagination">
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="blog-footer">
+        <p>&copy; 2024 Miracle. 用心创造，用爱设计 <i class="fas fa-heart"></i></p>
+    </footer>
+
+    <script src="js/blog.js"></script>
+</body>
+</html>
